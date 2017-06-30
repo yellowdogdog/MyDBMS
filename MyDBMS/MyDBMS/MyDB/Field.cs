@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace MyDBMS.MyDB
 {
+    [Serializable]
     class Field
     {
         /// <summary>

@@ -52,6 +52,9 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="MyDB\Condition.cs" />
+    <Compile Include="MyDB\Data.cs" />
+    <Compile Include="MyDB\DataF.cs" />
     <Compile Include="MyDB\Field.cs" />
     <Compile Include="MyDB\Table.cs" />
     <Compile Include="MyDB\TableF.cs" />

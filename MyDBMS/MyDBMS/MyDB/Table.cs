@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MyDBMS.MyDB
 {
+    [Serializable]
     class Table
     {
         /// <summary>
@@ -41,6 +43,10 @@ namespace MyDBMS.MyDB
         public bool setPrimaryKey(string fieldName)
         {
             return false;
+        }
+        public DataTable getEmptyTable()
+        {
+            return null;
         }
     }
 }
