@@ -9,7 +9,7 @@ namespace MyDBMS.MyDB
     [Serializable]
     class Condition
     {
-        public enum Operate { Equ,Greater,Less,And,Or,Not}
+        public enum Operate { Equ,Greater,Less,GreaterE,LessE,And,Or,Not}
         /// <summary>
         /// 条件中的字段名
         /// </summary>

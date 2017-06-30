@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,6 +13,7 @@ namespace MyDBMS.MyDB
     [Serializable]
     class DataF
     {
+        public const string FILE_PATH = "myDBData.dat";
         /// <summary>
         /// 表数据的集合
         /// </summary>
@@ -75,6 +79,13 @@ namespace MyDBMS.MyDB
         public void update(string tableName,string[] fieldNames,object[] values,Condition condition)
         {
 
+        }
+        private void saveFile()
+        {
+            Stream stream = new FileStream(FILE_PATH, FileMode.Create, FileAccess.Write, FileShare.None);
+            IFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(stream, this);
+            stream.Close();
         }
     }
 }
