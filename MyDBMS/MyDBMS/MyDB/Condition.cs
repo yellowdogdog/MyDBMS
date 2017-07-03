@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,11 +68,160 @@ namespace MyDBMS.MyDB
         /// <summary>
         /// 新建非运算条件
         /// </summary>
-        /// <param name="notCondition"></param>
+        /// <param name="notCondition">非条件</param>
         public Condition(Condition notCondition)
         {
             leftCondition = notCondition;
             operate = Operate.Not;
+        }
+        /// <summary>
+        /// 获取条件类型
+        /// </summary>
+        /// <returns>条件类型：
+        /// 1：变量叶节点
+        /// 2：值叶节点
+        /// 3：双目条件
+        /// 4：否条件
+        /// -1:条件格式错误
+        /// </returns>
+        public int getConditionType() 
+        {
+            if (value == null && fieldName != null)
+            {
+                return 1;
+            }
+            if (value !=null && fieldName == null)
+            {
+                return 2;
+            }
+            if (value == null && fieldName == null && operate != Operate.Not)
+            {
+                return 3;
+            }
+            if (value == null && fieldName == null && operate == Operate.Not)
+            {
+                return 4;
+            }
+            return -1;
+        }
+        public bool isConditionSetUp(Table[] tables,DataTable[] dts,int i)
+        {
+            switch (getConditionType())
+            {
+                case 1://列名
+                    Table table = tables[tableIndex];
+                    int j = table.isFieldNameExist(fieldName);
+                    if (j== -1)
+                    {
+                        throw new DataEditException("列名不存在：" + fieldName);
+                    }
+                    if (table.fields[j].type != Field.Type.Bit)
+                    {
+                        throw new DataEditException("条件格式错误:不可为非布尔值的列");
+                    }
+                    
+                    break;
+                case 2://值
+                    if (value.GetType() != typeof(bool))
+                    {
+                        throw new DataEditException("条件格式错误：不可为非布尔值的值");
+                    }else
+                    {
+                        return (bool)value;
+                    }
+                case 3://双目运算
+                    if (operate == Operate.Equ)
+                    {
+                        object leftValue = leftCondition.getValue(tables,dts,i);
+                        object rightValue = rightCondition.getValue(tables, dts, i);
+                        return leftValue.Equals(rightValue);
+                    }else if (operate == Operate.Greater || operate == Operate.GreaterE || operate == Operate.Less || operate == Operate.LessE)
+                    {
+                        object leftValue = leftCondition.getValue(tables, dts, i);
+                        object rightValue = rightCondition.getValue(tables, dts, i);
+                        double l;
+                        double r;
+                        if ((leftValue.GetType() == typeof(int) || leftValue.GetType() == typeof(double))
+                            &&(rightValue.GetType()==typeof(int)||rightValue.GetType()==typeof(double)))
+                        {
+                            l = (double)leftValue;
+                            r = (double)rightValue;
+                            switch (operate)
+                            {
+                                case Operate.Greater:
+                                    return l > r;
+                                case Operate.GreaterE:
+                                    return l >= r;
+                                case Operate.Less:
+                                    return l < r;
+                                case Operate.LessE:
+                                    return l <= r;
+                            }
+                        }else
+                        {
+                            throw new DataEditException("大于小于运算符的操作数不为数值");
+                        }
+                    }
+                    else
+                    {
+                        if (operate == Operate.And)
+                        {
+                            return leftCondition.isConditionSetUp(tables,dts,i) && rightCondition.isConditionSetUp(tables,dts,i);
+                        }else
+                        {
+                            return leftCondition.isConditionSetUp(tables, dts, i) || rightCondition.isConditionSetUp(tables, dts, i);
+                        }
+                    }
+                    break;
+                case 4://非运算
+                    return !leftCondition.isConditionSetUp(tables, dts, i);               
+            }
+            throw new DataEditException("未知的条件");
+        }
+        public object getValue(Table[] tables, DataTable[] dts, int i)
+        {
+            int cd = getConditionType();
+            if (cd == 3 || cd == 4)
+            {
+                throw new DataEditException("运算符找不到值对象");
+            }
+            if (cd == 1)
+            {
+                Table table = tables[tableIndex];
+                int j = table.isFieldNameExist(fieldName);
+                if (j == -1)
+                {
+                    throw new DataEditException("列名不存在：" + fieldName);
+                }
+                return dts[tableIndex].Rows[getInTableIndex(dts, i)][j];
+            }
+            if (cd == 2)
+            {
+                return value;
+            }
+            return null;
+
+        }
+        /// <summary>
+        /// 获取笛卡尔积排列的表中第i个元组在tableIndex个表中的相对位置
+        /// </summary>
+        /// <param name="dts">数据表集</param>
+        /// <param name="i">笛卡尔积中的元组序号</param>
+        /// <returns>指定表中的相对序号</returns>
+        private int getInTableIndex(DataTable[] dts,int i)
+        {
+            int[] rows = new int[dts.Length];
+            for(int j = 0; j < rows.Length; j++)
+            {
+                rows[j] = dts[j].Rows.Count;
+            }
+            int time = 1;
+            for(int j = rows.Length - 1; j > tableIndex; j--)
+            {
+                time *= rows[j];
+            }
+            return (i / time) % rows[tableIndex];
+
         }
     }
 }

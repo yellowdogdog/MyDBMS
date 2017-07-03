@@ -17,11 +17,32 @@ namespace MyDBMS.MyDB
         /// <summary>
         /// 字段种类
         /// </summary>
-        public Type type;
+        public Type type { get; set; }
         /// <summary>
         /// 字段长度
         /// </summary>
-        public int length { get; set; }
+        public int length {
+            get
+            {
+                switch (type)
+                {
+                    case Type.Bit:
+                        return 1;
+                    case Type.Int:
+                        return 4;
+                    case Type.nChar:
+                        return length;
+                    case Type.Real:
+                        return 8;
+                    default:
+                        return 0;
+                }
+            }
+            set
+            {
+                length = value;
+            }
+        }
         /// <summary>
         /// 是否主码
         /// </summary>
@@ -42,9 +63,10 @@ namespace MyDBMS.MyDB
         {
             this.FieldName = FieldName;
             this.type = type;
-            this.length = length;
             this.isNullable = isNullable;
             this.isKey = isKey;
+            this.length = length;
+            
         }
 
     }

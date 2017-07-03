@@ -30,6 +30,7 @@ namespace MyDBMS.MyDB
             }
             tables.Add(table);
             saveFile();
+            DataF.getDataF().addTableData();
         }
         public void deleteTable(string tableName)
         {
@@ -39,6 +40,8 @@ namespace MyDBMS.MyDB
                 throw new TableEditException("表不存在"+tableName); 
             }
             tables.RemoveAt(i);
+            saveFile();
+            DataF.getDataF().deleteTableData(i);
         }
         private void saveFile()
         {
@@ -69,7 +72,7 @@ namespace MyDBMS.MyDB
         /// </summary>
         /// <param name="name">表名</param>
         /// <returns>若存在返回表序号，不存在返回-1</returns>
-        private int isTableNameExist(string name)
+        public int isTableNameExist(string name)
         {
             for(int i = 0; i < tables.Count; i++)
             {

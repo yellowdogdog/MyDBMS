@@ -8,7 +8,18 @@ namespace MyDBMS.MyDB
         {
 
         }
-        public TableEditException(String msg):base(msg)
+        public TableEditException(string msg):base(msg)
+        {
+
+        }
+    }
+    class DataEditException : ApplicationException
+    {
+        public DataEditException()
+        {
+
+        }
+        public DataEditException(string msg) : base(msg)
         {
 
         }

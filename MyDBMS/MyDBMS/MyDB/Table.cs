@@ -108,7 +108,7 @@ namespace MyDBMS.MyDB
         /// </summary>
         /// <param name="name">表名</param>
         /// <returns>若存在返回表序号，不存在返回-1</returns>
-        private int isFieldNameExist(string name)
+        public int isFieldNameExist(string name)
         {
             for (int i = 0; i < fields.Count; i++)
             {
@@ -123,7 +123,7 @@ namespace MyDBMS.MyDB
         /// 主码是否存在
         /// </summary>
         /// <returns>主码序号，不存在返回-1</returns>
-        private int isPKExist()
+        public int isPKExist()
         {
             for (int i = 0; i < fields.Count; i++) {
                 if (fields[i].isKey)
