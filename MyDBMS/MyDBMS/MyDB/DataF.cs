@@ -141,7 +141,7 @@ namespace MyDBMS.MyDB
             }
             for (int i = 0; i < cartesian; i++)
             {//笛卡尔积主循环
-                if (condition.isConditionSetUp(tableF.tables.ToArray(), dts, i))
+                if (condition==null||condition.isConditionSetUp(tableF.tables.ToArray(), dts, i))
                 {//条件成立
                     DataRow dr = dtResult.NewRow();
                     for(int j = 0; j < selectCount; j++)
@@ -204,7 +204,7 @@ namespace MyDBMS.MyDB
             DataTable dt = datas[index].getData(tableF.tables[index]);
             for(int i = 0; i < dt.Rows.Count; i++)
             {
-                if(condition.isConditionSetUp(new Table[] { tableF.tables[index] },new DataTable[] {dt }, i))
+                if(condition==null||condition.isConditionSetUp(new Table[] { tableF.tables[index] },new DataTable[] {dt }, i))
                 {
                     dt.Rows.RemoveAt(i);
                     i--;
@@ -298,7 +298,7 @@ namespace MyDBMS.MyDB
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                if (condition.isConditionSetUp(new Table[] { table }, new DataTable[] { dt }, i))
+                if (condition==null||condition.isConditionSetUp(new Table[] { table }, new DataTable[] { dt }, i))
                 {
                     for(int j = 0; j < values.Length; j++)
                     {
@@ -321,6 +321,14 @@ namespace MyDBMS.MyDB
             stream.Close();
             dataF.getTable();
             return dataF;
+        }
+        static DataF()
+        {
+            if (!File.Exists(FILE_PATH))
+            {
+                DataF DataF = new DataF();
+                DataF.saveFile();
+            }
         }
         /// <summary>
         /// 新建表时调用，保持文件一致性

@@ -187,8 +187,37 @@ namespace MyDBMS.MyDB
             }
             if (cd == 1)
             {
-                Table table = tables[tableIndex];
-                int j = table.isFieldNameExist(fieldName);
+                int j = -1 ;
+                if (tableIndex == -1)
+                {//查找确定表号
+                    int tIndex = -1;
+                    for (int k = 0; k <tables.Length; k++)
+                    {
+                        int tmp = tables[k].isFieldNameExist(fieldName);
+                        if (tmp != -1)
+                        {
+                            if (tIndex != -1)
+                            {
+                                throw new DataEditException("列名不明确：" + fieldName);
+                            }
+                            else
+                            {
+                                tIndex = k;
+                                j = tmp;
+                            }
+                        }
+                    }
+                    if (tIndex == -1)
+                    {
+                        throw new DataEditException("不存在的列名：" + fieldName);
+                    }
+                    tableIndex = tIndex;
+                }else
+                {
+                    Table table = tables[tableIndex];
+                    j = table.isFieldNameExist(fieldName);
+                }
+              
                 if (j == -1)
                 {
                     throw new DataEditException("列名不存在：" + fieldName);
