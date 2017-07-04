@@ -95,13 +95,14 @@ namespace MyDBMS.MyDB
                         break;
 
                 }
-                dt.Columns.Add(new DataColumn());
+                dt.Columns.Add(dataColumn);
             }
             return dt;
         }
         public Table(string tableName)
         {
             TableName = tableName;
+            fields = new List<Field>();
         }
         /// <summary>
         /// 查询是否存在同名字段

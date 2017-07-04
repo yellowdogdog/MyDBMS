@@ -17,7 +17,7 @@ namespace MyDBMS.MyDB
         /// <summary>
         /// 表数据的集合
         /// </summary>
-        public List<Data> datas;
+        public List<Data> datas=new List<Data>();
         [NonSerialized]
         protected TableF tableF;
         /// <summary>
@@ -51,7 +51,7 @@ namespace MyDBMS.MyDB
                 fromTable[i] = tableF.isTableNameExist(tableNames[i]);
                 if (fromTable[i] == -1)
                 {
-                    throw new DataEditException("表不存在："+fromTable[i]);
+                    throw new DataEditException("表不存在："+tableNames[i]);
                 }
             }             
             if (fieldNames == null)

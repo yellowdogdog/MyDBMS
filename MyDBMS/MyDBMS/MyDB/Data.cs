@@ -36,16 +36,16 @@ namespace MyDBMS.MyDB
                         switch (table.fields[j].type)
                         {
                             case Field.Type.Bit:
-                                dr[i] = BitConverter.ToBoolean(tableDatas[i], p);
+                                dr[j] = BitConverter.ToBoolean(tableDatas[i], p);
                                 break;
                             case Field.Type.Int:
-                                dr[i] = BitConverter.ToInt32(tableDatas[i], p);
+                                dr[j] = BitConverter.ToInt32(tableDatas[i], p);
                                 break;
                             case Field.Type.nChar:
-                                Encoding.Default.GetString(tableDatas[i], p, table.fields[j].length);
+                                dr[j]=Encoding.Default.GetString(tableDatas[i], p, table.fields[j].length);
                                 break;
                             case Field.Type.Real:
-                                dr[i] = BitConverter.ToDouble(tableDatas[i], p);
+                                dr[j] = BitConverter.ToDouble(tableDatas[i], p);
                                 break;
                         }
                     }

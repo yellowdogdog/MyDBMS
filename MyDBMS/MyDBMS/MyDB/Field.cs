@@ -18,6 +18,7 @@ namespace MyDBMS.MyDB
         /// 字段种类
         /// </summary>
         public Type type { get; set; }
+        private int Length;
         /// <summary>
         /// 字段长度
         /// </summary>
@@ -31,7 +32,7 @@ namespace MyDBMS.MyDB
                     case Type.Int:
                         return 4;
                     case Type.nChar:
-                        return length;
+                        return Length;
                     case Type.Real:
                         return 8;
                     default:
@@ -40,7 +41,7 @@ namespace MyDBMS.MyDB
             }
             set
             {
-                length = value;
+                Length = value;
             }
         }
         /// <summary>
