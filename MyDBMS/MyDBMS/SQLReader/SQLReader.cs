@@ -35,7 +35,7 @@ namespace MyDBMS.SQLReader
             j = 0;
             for (i = 0; i < 10; i++)
             {
-                keyword[i] = "";
+                keyword[i]=null;
             }
             while (i < sql.Length)
             {
@@ -53,13 +53,13 @@ namespace MyDBMS.SQLReader
             {
                 while (i < sql.Length)
                 {
-                    first[m] = "";
+                    first[m]=null;
                     for (; i < sql.Length && sql[i] != ' ' && sql[i] != '\n'; i++)
                     {
                         first[m] = first[m] + sql[i];
                         k = 1;
                     }
-                    if (first[m].ToLower() == "from")
+                    if (first[m]!=null&&first[m].ToLower() == "from")
                         break;
                     if (k == 1)
                     {
@@ -77,13 +77,18 @@ namespace MyDBMS.SQLReader
                 k = 0;
                 while (i < sql.Length)
                 {
-                    second[n] = "";
+                    second[n]=null;
                     for (; sql[i] != ' ' && sql[i] != '\n' && sql[i] != ',' && i < sql.Length; i++)
                     {
                         second[n] = second[n] + sql[i];
                         k = 1;
+                        if (sql[i] == '>' || sql[i] == '<' || sql[i] == '=')
+                        {
+                            MessageBox.Show("未输入where，错误");
+                            break;
+                        }
                     }
-                    if (second[n].ToLower() == "where")
+                    if (second[n]!=null&&second[n].ToLower() == "where")
                         break;
                     if (k == 1)
                     {
@@ -91,9 +96,7 @@ namespace MyDBMS.SQLReader
                         k = 0;
                     }
                     i++;
-
                 }
-
                 keyword[2] = "where";
                 for (; n < 10; n++)
                 {
@@ -127,10 +130,21 @@ namespace MyDBMS.SQLReader
                 for(int s1=0;s1<s;s1++)
                 {
                     index[s1] = getindex(second0,first0[s1]);
+                    first0[s1] = getname(first0[s1]);
                 }
+                if (first0[0] == "*")
+                    first0[0] = null;
                 DataF dataF = DataF.getDataF();
-                DataTable dt = dataF.selectData(second0, first0, index, getcondition(second0, i, sql));//select查询
-                return dt;
+                if(i==sql.Length)
+                {
+                    DataTable dt0 = dataF.selectData(second0, first0, index, null);
+                    return dt0;
+                }
+                else
+                {
+                    DataTable dt = dataF.selectData(second0, first0, index, getcondition(second0, i, sql));//select查询
+                    return dt;
+                }                   
             }
             else if (keyword[0].ToLower() == all[1])//insert
             {
@@ -139,7 +153,7 @@ namespace MyDBMS.SQLReader
                 k = 0;
                 while (i < sql.Length)
                 {
-                    second[ins] = "";
+                    second[ins]=null;
                     for (; i < sql.Length && sql[i] != '(' && sql[i] != ')' && sql[i] != ',' && sql[i] != ' ' && sql[i] != '\n'; i++)
                     {
                         second[ins] = second[ins] + sql[i];
@@ -162,7 +176,7 @@ namespace MyDBMS.SQLReader
                 k = 0;
                 while (i < sql.Length - 1)
                 {
-                    third[ins1] = "";
+                    third[ins1]=null;
                     for (; sql[i] != '\'' && sql[i] != '(' && sql[i] != ')' && sql[i] != ',' && sql[i] != ' ' && sql[i] != '\n' && i < sql.Length - 1; i++)
                     {
                         third[ins1] = third[ins1] + sql[i];
@@ -205,7 +219,7 @@ namespace MyDBMS.SQLReader
                 k = 0;
                 while (i < sql.Length)
                 {
-                    second[ins] = "";
+                    second[ins]=null;
                     for (; i < sql.Length && sql[i] != '(' && sql[i] != ')' && sql[i] != ',' && sql[i] != ' ' && sql[i] != '\n'; i++)
                     {
                         second[ins] = second[ins] + sql[i];
@@ -213,7 +227,7 @@ namespace MyDBMS.SQLReader
                     }
 
                     //second[1]是表名
-                    if (second[ins].ToLower() == "where")
+                    if (second[ins]!=null&&second[ins].ToLower() == "where")
                         break;
                     if (k == 1)
                     {
@@ -237,7 +251,7 @@ namespace MyDBMS.SQLReader
                 k = 0;
                 while (i < sql.Length)
                 {
-                    second[ins] = "";
+                    second[ins]=null;
                     for (; i < sql.Length && sql[i] != '(' && sql[i] != ')' && sql[i] != ',' && sql[i] != ' ' && sql[i] != '\n'; i++)
                     {
                         second[ins] = second[ins] + sql[i];
@@ -245,7 +259,7 @@ namespace MyDBMS.SQLReader
                     }
 
                     //second[0]是表名
-                    if (second[ins].ToLower() == "set")
+                    if (second[ins]!=null&&second[ins].ToLower() == "set")
                         break;
                     if (k == 1)
                     {
@@ -261,8 +275,8 @@ namespace MyDBMS.SQLReader
                 {
 
                     k1 = 0;
-                    first[upd] = "";
-                    first1[upd1] = "";
+                    first[upd]=null;
+                    first1[upd1]=null;
                     for (; i < sql.Length && sql[i] != ',' && sql[i] != ' ' && sql[i] != '\n'; i++)
                     {
                         if (sql[i] == '=')
@@ -276,7 +290,7 @@ namespace MyDBMS.SQLReader
                         }
                         k = 1;
                     }
-                    if (first[upd].ToLower() == "where")
+                    if (first[upd]!=null&&first[upd].ToLower() == "where")
                     {
                         first[upd] = null;
                         first1[upd1] = null;
@@ -321,7 +335,7 @@ namespace MyDBMS.SQLReader
                 k = 0;
                 while (i < sql.Length)
                 {
-                    second[ins] = "";
+                    second[ins]=null;
                     for (; i < sql.Length && sql[i] != '(' && sql[i] != ')' && sql[i] != ',' && sql[i] != ' ' && sql[i] != '\n'; i++)
                     {
                         second[ins] = second[ins] + sql[i];
@@ -348,13 +362,12 @@ namespace MyDBMS.SQLReader
                 k = 0;
                 while (i < sql.Length)
                 {
-                    second[ins] = "";
+                    second[ins]=null;
                     for (; i < sql.Length && sql[i] != '(' && sql[i] != ')' && sql[i] != ',' && sql[i] != ' ' && sql[i] != '\n'; i++)
                     {
                         second[ins] = second[ins] + sql[i];
                         k = 1;
                     }
-
                     //second[1]是表名
                     if (sql[i] == '(')
                         break;
@@ -373,7 +386,7 @@ namespace MyDBMS.SQLReader
                 bool nul = false, key = false;
                 while (i < sql.Length)
                 {
-                    third[c] = "";
+                    third[c] = null;
                     for (; i < sql.Length && sql[i] != ' ' && sql[i] != '\n' && sql[i] != '(' && sql[i] != ')' && sql[i] != '[' && sql[i] != ']'; i++)
                     {
                         if (sql[i] == ',')
@@ -386,10 +399,13 @@ namespace MyDBMS.SQLReader
                         bool num = true;
                         for (int i1 = 0; i1 < third[c].Length; i1++)
                         {
-                            if (!Char.IsNumber(third[3], i1))
+                            if (third[2]!=null&&!Char.IsNumber(third[2], i1))
+                            {
                                 num = false;
+                                break;
+                            }
                         }
-                        if (num != true)
+                        if (third[2]==null||num != true)
                         {
                             c++;
                             third[c] = third[c - 1];
@@ -398,17 +414,19 @@ namespace MyDBMS.SQLReader
                     }
                     if (c == 3)
                     {
-                        if (third[c].ToLower() == "null")
+                        if (third[c]!=null&&third[c].ToLower() == "null")
                             nul = true;
-                        else if (third[c].ToLower() == "iskey")
+                        else if (third[c] != null && third[c].ToLower() == "iskey")
                             key = true;
-                        else MessageBox.Show("是否为空或是否为主键输入错误！");
+                        else if(third[c]!=null)
+                            MessageBox.Show("是否为空或是否为主键输入错误！");
                     }
                     if (c == 4)
                     {
-                        if (third[c].ToLower() == "iskey")
+                        if (third[c] != null && third[c].ToLower() == "iskey")
                             key = true;
-                        else MessageBox.Show("是否为主键输入错误！");
+                        else if (third[c] != null)
+                            MessageBox.Show("是否为主键输入错误！");
                     }
                     if (sql[i] == ')')
                         break;
@@ -425,20 +443,23 @@ namespace MyDBMS.SQLReader
                         k = 0;
                     }
                     i++;
-                    //获取枚举值en
-                    Type ob = typeof(Field.Type);
-                    //Field.Type ob = new Field.Type();
-                    //ob = Field.Type.Int;
-                    Array ar = Enum.GetValues(ob);
-                    int en;
-                    for (en = 0; en < ar.Length; en++)
+                    if(sql[i]==','||sql[i]=='）')
                     {
-                        if (third[2].ToLower() == ar.GetValue(en).ToString().ToLower())
-                            break;
-                    }
+                        //获取枚举值en
+                        Type ob = typeof(Field.Type);
+                        //Field.Type ob = new Field.Type();
+                        //ob = Field.Type.Int;
+                        Array ar = Enum.GetValues(ob);
+                        int en;
+                        for (en = 0; en < ar.Length; en++)
+                        {
+                            if (third[1].ToLower() == ar.GetValue(en).ToString().ToLower())
+                                break;
+                        }
 
-                    Field field = new Field(third[0], (Field.Type)en, Convert.ToInt16(third[2]), nul, key);
-                    table.addField(field);
+                        Field field = new Field(third[0], (Field.Type)en, Convert.ToInt16(third[2]), nul, key);
+                        table.addField(field);
+                    }
                 }
                 tableF.addTable(table);
                 DataTable dt = null;
@@ -462,7 +483,7 @@ namespace MyDBMS.SQLReader
             while (i < sql.Length)
             {
 
-                third[l] = "";
+                third[l]=null;
                 for (; i < sql.Length && sql[i] != ' ' && sql[i] != '\n'; i++)
                 {
                     if (sql[i] == '>')
@@ -550,7 +571,7 @@ namespace MyDBMS.SQLReader
             int c = 0;
             for (int t = 0; t < l; t++)
             {
-                if (third[t].ToLower() == "not")
+                if (third[t]!=null&&third[t].ToLower() == "not")
                 {
                     condition[c] = new Condition(condition[c]);
                     c++;
@@ -594,7 +615,7 @@ namespace MyDBMS.SQLReader
             int c1 = 0;
             for (int t = 0; t < l; t++)
             {
-                if (third[t].ToLower() == "and")
+                if (third[t]!=null&&third[t].ToLower() == "and")
                 {
                     condition[c1] = new Condition(condition[c1], condition[c1 + 1], Condition.Operate.And);
                     for (int c0 = 1; c0 < c; c++)
@@ -602,7 +623,7 @@ namespace MyDBMS.SQLReader
                         condition[c0] = condition[c0 + 1];
                     }
                 }
-                if (third[t].ToLower() == "less")
+                if (third[t] != null && third[t].ToLower() == "less")
                 {
                     condition[c1] = new Condition(condition[c1], condition[c1 + 1], Condition.Operate.Or);
                     for (int c0 = 1; c0 < c; c++)
