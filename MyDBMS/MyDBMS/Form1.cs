@@ -67,5 +67,14 @@ namespace MyDBMS
                 lbxTable.Items.Add(tableF.tables[i].TableName);
             }
         }
+        public void refreshAll()
+        {
+            bindTableData();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

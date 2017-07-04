@@ -52,7 +52,9 @@ namespace MyDBMS
 
         private void SQLForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            Form1.fmain.refreshAll();
             Form1.fmain.Show();
+            
         }
     }
 }

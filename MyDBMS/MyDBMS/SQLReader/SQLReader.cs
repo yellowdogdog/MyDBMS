@@ -206,7 +206,7 @@ namespace MyDBMS.SQLReader
                 DataF dataF = DataF.getDataF();
                 List<object> list = new List<object>();
                 for (int s1 = 0; s1 < s; s1++)
-                    list.Add(third1[s1]);
+                    list.Add(isname(third1[s1]));
                 //object[] b = (object[])ArrayList.Adapter((Array)third).ToArray(typeof(object));
                 dataF.insert(second[1], list);
                 DataTable dt = null;
