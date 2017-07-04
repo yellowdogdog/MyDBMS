@@ -12,8 +12,12 @@ namespace MyDBMS.SQLReader
 {
     class SQLreader
     {
+        public static string[] third = new string[20];
+        public static string[] operate = new string[10];
+        public static int k = 0, l = 0;
         public static DataTable readsql(string sql)
         {
+            
             //sql = "select a from student where sno='1234'";
             string[] all = new string[10];
             all[0] = "select";
@@ -26,9 +30,8 @@ namespace MyDBMS.SQLReader
             string[]  keyword =new string[10];
             string[] first = new string[10];
             string[] second = new string[10];
-            string[] third = new string[20];
-            string[] operate = new string[10];
-            int i,j, k=0;
+          
+            int i,j;
             j = 0;
             for (i = 0; i < 10; i++)
             {
@@ -44,7 +47,7 @@ namespace MyDBMS.SQLReader
                 if (k==1 && sql[i] == ' ')
                     break;
             }            
-            int m = 0,n=0,l=0;
+            int m = 0,n=0;
             k = 0;
             if (keyword[0].ToLower() == all[0])//select
             {
@@ -75,7 +78,7 @@ namespace MyDBMS.SQLReader
                 while (i < sql.Length)
                 {
                     second[n] = "";
-                    for (; sql[i] != ' ' && sql[i] != '\n' && i < sql.Length; i++)
+                    for (; sql[i] != ' ' && sql[i] != '\n' && sql[i] != ',' && i < sql.Length; i++)
                     {
                         second[n] = second[n] + sql[i];
                         k = 1;
@@ -97,140 +100,36 @@ namespace MyDBMS.SQLReader
                     second[n] = null;
                 }
                 k = 0;
-                while (i < sql.Length)
+                int s;
+               //去second[]  null
+                for ( s = 0; s < second.Length;s++)
                 {
-
-                    third[l] = "";
-                    for (; i < sql.Length && sql[i] != ' ' && sql[i] != '\n'; i++)
-                    {
-                        if (sql[i] == '>')
-                        {
-                            l++;
-                            third[l] = "Greater";
-                            k = 1;
-                            break;
-                        }
-                        else if (sql[i] == '<')
-                        {
-                            l++;
-                            third[l] = "Less";
-                            k = 1;
-                            break;
-                        }
-                        else if (sql[i] == '=')
-                        {
-                            l++;
-                            third[l] = "Equ";
-                            k = 1;
-                            break;
-                        }
-                        else if (sql[i] == '\'' || sql[i] == '\'')
-                        {
-                            k = 0;
-                        }
-                        else
-                        {
-                            third[l] = third[l] + sql[i];
-                            k = 1;
-                            if (i < sql.Length - 1)
-                            {
-                                if (sql[i + 1] == '>' || sql[i + 1] == '<' || sql[i + 1] == '=')
-                                    k = 0;
-                            }
-                           
-                        }
-                    }
-                    i++;
-                    if (k == 1)
-                    {
-                        l++;
-                        k = 0;
-                    }
-
+                    if (second[s] == null)
+                        break;
                 }
-                //l = l + 1;
-                for (int t = 1; t < l; t++)
+                string[] second0 = new string[s];
+                for (int s1 = 0; s1 < s; s1++)
                 {
-                    if (third[t] == "Equ")
-                    {
-                        int t1 = t;
-                        t1 = t1 - 1;
-                        if (third[t1] == "Greater")
-                        {
-                            third[t1] = "GreaterE";//等待修改
-                            for (int t2 = t + 1; t2 < l; t2++)
-                            {
-                                t1++;
-                                third[t1] = third[t2];
-                            }
-                            l = l - 1;
-                        }
-                        if (third[t1] == "Less")
-                        {
-                            third[t1] = "xiaoyuyudengyu";//等待修改
-                            for (int t2 = t + 1; t2 < l; t2++)
-                            {
-                                t1++;
-                                third[t1] = third[t2];
-                            }
-                            l = l - 1;
-                        }
-                    }
+                    second0[s1] = second[s1];
                 }
-                operate[0] = "Greater";
-                operate[1] = "Less";
-                operate[2] = "Equ";
-                operate[3] = "GreaterE";//等待修改
-                operate[4] = "LessE";//等待修改
-                DataF dataF = new DataF();
-                //DataF dataF = DataF.getDataF();
-                Condition[] condition = new Condition[10];
-                int c = 0;
-                for (int t = 0; t < l; t++)
+                //去first[]  null
+                for (s = 0; s < first.Length; s++)
                 {
-                    if (third[t].ToLower() == "not")
-                    {
-                        condition[c] = new Condition(condition[c]);
-                        c++;
-                    }
-                    for (int t1 = 0; t1 < 5; t1++)
-                        if (third[t] == operate[t1])//等待添加大于等于和小于等于
-                        {
-                            condition[c] = new Condition((Object)third[t - 1]);
-                            condition[c + 1] = new Condition((Object)third[t + 1]);
-                            if (t1 == 0)
-                                condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Greater);
-                            if (t1 == 1)
-                                condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Less);
-                            if (t1 == 2)
-                                condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Equ);
-                            c++;
-                            break;
-                        }
+                    if (first[s] == null)
+                        break;
                 }
-                c = c - 1;
-                int c1 = 0;
-                for (int t = 0; t < l; t++)
+                string[] first0 = new string[s];
+                for (int s1 = 0; s1 < s; s1++)
                 {
-                    if (third[t].ToLower() == "and")
-                    {
-                        condition[c1] = new Condition(condition[c1], condition[c1 + 1], Condition.Operate.And);
-                        for (int c0 = 1; c0 < c; c++)
-                        {
-                            condition[c0] = condition[c0 + 1];
-                        }
-                    }
-                    if (third[t].ToLower() == "less")
-                    {
-                        condition[c1] = new Condition(condition[c1], condition[c1 + 1], Condition.Operate.Or);
-                        for (int c0 = 1; c0 < c; c++)
-                        {
-                            condition[c0] = condition[c0 + 1];
-                        }
-                    }
-
+                    first0[s1] = first[s1];
                 }
-                DataTable dt = dataF.selectData(second, first,new int[] { 0 }, condition[0]);//select查询
+                int[] index = new int[s];
+                for(int s1=0;s1<s;s1++)
+                {
+                    index[s1] = getindex(second0,first0[s1]);
+                }
+                DataF dataF = DataF.getDataF();
+                DataTable dt = dataF.selectData(second0, first0, index, getcondition(second0, i, sql));//select查询
                 return dt;
             }
             else if (keyword[0].ToLower() == all[1])//insert
@@ -280,10 +179,20 @@ namespace MyDBMS.SQLReader
                     i++;
                 }
                 //third[]中存储values
-                DataF dataF = new DataF();
-                //DataF dataF = DataF.getDataF();
+                int s;
+                for (s = 0; s < third.Length; s++)
+                {
+                    if (third[s] == null)
+                        break;
+                }
+                string[] third1 = new string[s];
+                for (int s1 = 0; s1 < s; s1++)
+                    third1[s1] = third[s1];
+                //DataF dataF = new DataF();
+                DataF dataF = DataF.getDataF();
                 List<object> list = new List<object>();
-                list.Add(third);
+                for (int s1 = 0; s1 < s; s1++)
+                    list.Add(third1[s1]);
                 //object[] b = (object[])ArrayList.Adapter((Array)third).ToArray(typeof(object));
                 dataF.insert(second[1], list);
                 DataTable dt = null;
@@ -314,143 +223,11 @@ namespace MyDBMS.SQLReader
                     i++;
                 }
                 //获取condition
-                k = 0;
-                while (i < sql.Length)
-                {
-
-                    third[l] = "";
-                    for (; i < sql.Length && sql[i] != ' ' && sql[i] != '\n'; i++)
-                    {
-                        if (sql[i] == '>')
-                        {
-                            //l++;
-                            third[l] = "Greater";
-                            k = 1;
-                            break;
-                        }
-                        else if (sql[i] == '<')
-                        {
-                            //l++;
-                            third[l] = "Less";
-                            k = 1;
-                            break;
-                        }
-                        else if (sql[i] == '=')
-                        {
-                            //l++;
-                            third[l] = "Equ";
-                            k = 1;
-                            break;
-                        }
-                        else if (sql[i] == '\'' || sql[i] == '\'')
-                        {
-                            k = 0;
-                        }
-                        else
-                        {
-                            third[l] = third[l] + sql[i];
-                            k = 1;
-                            if (sql[i + 1] == '>' || sql[i + 1] == '<' || sql[i + 1] == '=')
-                                break;
-                        }
-                    }
-                    i++;
-                    if (k == 1)
-                    {
-                        l++;
-                        k = 0;
-                    }
-
-                }
-                l = l + 1;
-                for (int t = 1; t < l; t++)
-                {
-                    if (third[t] == "Equ")
-                    {
-                        int t1 = t;
-                        t1 = t1 - 1;
-                        if (third[t1] == "Greater")
-                        {
-                            third[t1] = "GreaterE";//等待修改
-                            for (int t2 = t + 1; t2 < l; t2++)
-                            {
-                                t1++;
-                                third[t1] = third[t2];
-                            }
-                            l = l - 1;
-                        }
-                        if (third[t1] == "Less")
-                        {
-                            third[t1] = "LessE";//等待修改
-                            for (int t2 = t + 1; t2 < l; t2++)
-                            {
-                                t1++;
-                                third[t1] = third[t2];
-                            }
-                            l = l - 1;
-                        }
-                    }
-                }
-                operate[0] = "Greater";
-                operate[1] = "Less";
-                operate[2] = "Equ";
-                operate[3] = "GreaterE";//等待修改
-                operate[4] = "LessE";//等待修改
-                DataF dataf = new DataF();
-                //DataF dataF = DataF.getDataF();
-                Condition[] condition = new Condition[10];
-                int c = 0;
-                for (int t = 0; t < l; t++)
-                {
-                    if (third[t].ToLower() == "not")
-                    {
-                        condition[c] = new Condition(condition[c]);
-                        c++;
-                    }
-                    for (int t1 = 0; t1 < 5; t1++)
-                        if (third[t] == operate[t1])//等待添加大于等于和小于等于
-                        {
-                            condition[c] = new Condition((Object)third[t - 1]);
-                            condition[c + 1] = new Condition((Object)third[t + 1]);
-                            if (t1 == 0)
-                                condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Greater);
-                            if (t1 == 1)
-                                condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Less);
-                            if (t1 == 2)
-                                condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Equ);
-                            if (t1 == 3)
-                                condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.GreaterE);
-                            if (t1==4)
-                                condition[c]= new Condition(condition[c], condition[c + 1], Condition.Operate.LessE);
-                            c++;
-                            break;
-                        }
-                }
-                c = c - 1;
-                int c1 = 0;
-                for (int t = 0; t < l; t++)
-                {
-                    if (third[t].ToLower() == "and")
-                    {
-                        condition[c1] = new Condition(condition[c1], condition[c1 + 1], Condition.Operate.And);
-                        for (int c0 = 1; c0 < c; c++)
-                        {
-                            condition[c0] = condition[c0 + 1];
-                        }
-                    }
-                    if (third[t].ToLower() == "less")
-                    {
-                        condition[c1] = new Condition(condition[c1], condition[c1 + 1], Condition.Operate.Or);
-                        for (int c0 = 1; c0 < c; c++)
-                        {
-                            condition[c0] = condition[c0 + 1];
-                        }
-                    }
-
-                }
                 //DataF dataf = new DataF();
-                //DataF dataf = DataF.getDataF();
-                dataf.delete(second[1], condition[0]);
+                DataF dataf = DataF.getDataF();
+                string[] second1 = new string[1];
+                second1[0] = second[1];
+                dataf.delete(second[1], getcondition(second1,i,sql));
                 DataTable dt = null;
                 return dt;
             }
@@ -482,6 +259,7 @@ namespace MyDBMS.SQLReader
                 k = 0;
                 while (i < sql.Length)
                 {
+
                     k1 = 0;
                     first[upd] = "";
                     first1[upd1] = "";
@@ -514,139 +292,26 @@ namespace MyDBMS.SQLReader
                     i++;
                 }
                 //获取condition
-                k = 0;
-                while (i < sql.Length)
-                {
 
-                    third[l] = "";
-                    for (; i < sql.Length && sql[i] != ' ' && sql[i] != '\n'; i++)
-                    {
-                        if (sql[i] == '>')
-                        {
-                            //l++;
-                            third[l] = "Greater";
-                            k = 1;
-                            break;
-                        }
-                        else if (sql[i] == '<')
-                        {
-                            //l++;
-                            third[l] = "Less";
-                            k = 1;
-                            break;
-                        }
-                        else if (sql[i] == '=')
-                        {
-                            //l++;
-                            third[l] = "Equ";
-                            k = 1;
-                            break;
-                        }
-                        else if (sql[i] == '\'' || sql[i] == '\'')
-                        {
-                            k = 0;
-                        }
-                        else
-                        {
-                            third[l] = third[l] + sql[i];
-                            k = 1;
-                            if (sql[i + 1] == '>' || sql[i + 1] == '<' || sql[i + 1] == '=')
-                                break;
-                        }
-                    }
-                    i++;
-                    if (k == 1)
-                    {
-                        l++;
-                        k = 0;
-                    }
-
-                }
-                l = l + 1;
-                for (int t = 1; t < l; t++)
-                {
-                    if (third[t] == "Equ")
-                    {
-                        int t1 = t;
-                        t1 = t1 - 1;
-                        if (third[t1] == "Greater")
-                        {
-                            third[t1] = "GreaterE";//等待修改
-                            for (int t2 = t + 1; t2 < l; t2++)
-                            {
-                                t1++;
-                                third[t1] = third[t2];
-                            }
-                            l = l - 1;
-                        }
-                        if (third[t1] == "Less")
-                        {
-                            third[t1] = "xiaoyuyudengyu";//等待修改
-                            for (int t2 = t + 1; t2 < l; t2++)
-                            {
-                                t1++;
-                                third[t1] = third[t2];
-                            }
-                            l = l - 1;
-                        }
-                    }
-                }
-                operate[0] = "Greater";
-                operate[1] = "Less";
-                operate[2] = "Equ";
-                operate[3] = "GreaterE";//等待修改
-                operate[4] = "LessE";//等待修改
-                DataF dataf = new DataF();
-                //DataF dataF = DataF.getDataF();
-                Condition[] condition = new Condition[10];
-                int c = 0;
-                for (int t = 0; t < l; t++)
-                {
-                    if (third[t].ToLower() == "not")
-                    {
-                        condition[c] = new Condition(condition[c]);
-                        c++;
-                    }
-                    for (int t1 = 0; t1 < 5; t1++)
-                        if (third[t] == operate[t1])//等待添加大于等于和小于等于
-                        {
-                            condition[c] = new Condition((Object)third[t - 1]);
-                            condition[c + 1] = new Condition((Object)third[t + 1]);
-                            if (t1 == 0)
-                                condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Greater);
-                            if (t1 == 1)
-                                condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Less);
-                            if (t1 == 2)
-                                condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Equ);
-                            c++;
-                            break;
-                        }
-                }
-                c = c - 1;
-                int c1 = 0;
-                for (int t = 0; t < l; t++)
-                {
-                    if (third[t].ToLower() == "and")
-                    {
-                        condition[c1] = new Condition(condition[c1], condition[c1 + 1], Condition.Operate.And);
-                        for (int c0 = 1; c0 < c; c++)
-                        {
-                            condition[c0] = condition[c0 + 1];
-                        }
-                    }
-                    if (third[t].ToLower() == "less")
-                    {
-                        condition[c1] = new Condition(condition[c1], condition[c1 + 1], Condition.Operate.Or);
-                        for (int c0 = 1; c0 < c; c++)
-                        {
-                            condition[c0] = condition[c0 + 1];
-                        }
-                    }
-
-                }
+                //去null
+                string[] second1 = new string[1];
+                second1[0] = second[1];
+                int s;
+                for (s = 0; s < first.Length; s++)
+                    if (first[s] == null)
+                        break;
+                string[] first0 = new string[s];
+                for (int s1 = 0; s1 < s; s1++)
+                    first0[s1] = first[s1];
+                for (s = 0; s < first1.Length; s++)
+                    if (first1[s] == null)
+                        break;
+                object[] first10 = new string[s];
+                for (int s1 = 0; s1 < s; s1++)
+                    first10[s1] = isname(first1[s1]);
                 //DataF dataf = new DataF();
-                //DataF dataf = DataF.getDataF();
-                dataf.update(second[0], first, first1, condition[0]);
+                DataF dataf = DataF.getDataF();
+                dataf.update(second[0], first0, first10, getcondition(second1,i,sql));
                 DataTable dt = null;
                 return dt;
             }
@@ -674,7 +339,7 @@ namespace MyDBMS.SQLReader
                     i++;
                 }
                 //11111111
-                TableF tablef = new TableF();
+                TableF tablef = TableF.getTableF();
                 tablef.deleteTable(second[0]);
             }
             else if (keyword[0].ToLower() == all[5])//create
@@ -701,7 +366,7 @@ namespace MyDBMS.SQLReader
                     i++;
                 }
                 //1111111111
-                TableF tableF = new TableF();
+                TableF tableF =TableF.getTableF();
                 Table table = new Table(second[1]);
                 int c = 0;
                 k = 0;
@@ -788,7 +453,220 @@ namespace MyDBMS.SQLReader
             }
             DataTable dt1 = null;
             return dt1;
-        }      
+        }
 
+        private static Condition getcondition(string []second2,int i, string sql)
+        {
+            l = 0;
+            k = 0;
+            while (i < sql.Length)
+            {
+
+                third[l] = "";
+                for (; i < sql.Length && sql[i] != ' ' && sql[i] != '\n'; i++)
+                {
+                    if (sql[i] == '>')
+                    {
+                        l++;
+                        third[l] = "Greater";
+                        k = 1;
+                        break;
+                    }
+                    else if (sql[i] == '<')
+                    {
+                        l++;
+                        third[l] = "Less";
+                        k = 1;
+                        break;
+                    }
+                    else if (sql[i] == '=')
+                    {
+                        l++;
+                        third[l] = "Equ";
+                        k = 1;
+                        break;
+                    }
+                    /*else if (sql[i] == '\'' || sql[i] == '\'')
+                    {
+                        k = 0;
+                    }*/
+                    else
+                    {
+                        third[l] = third[l] + sql[i];
+                        k = 1;
+                        if (i < sql.Length - 1)
+                        {
+                            if (sql[i + 1] == '>' || sql[i + 1] == '<' || sql[i + 1] == '=')
+                                k = 0;
+                        }
+
+                    }
+                }
+                i++;
+                if (k == 1)
+                {
+                    l++;
+                    k = 0;
+                }
+
+            }
+            //l = l + 1;
+            for (int t = 1; t < l; t++)
+            {
+                if (third[t] == "Equ")
+                {
+                    int t1 = t;
+                    t1 = t1 - 1;
+                    if (third[t1] == "Greater")
+                    {
+                        third[t1] = "GreaterE";//等待修改
+                        for (int t2 = t + 1; t2 < l; t2++)
+                        {
+                            t1++;
+                            third[t1] = third[t2];
+                        }
+                        l = l - 1;
+                    }
+                    if (third[t1] == "Less")
+                    {
+                        third[t1] = "LessE";//等待修改
+                        for (int t2 = t + 1; t2 < l; t2++)
+                        {
+                            t1++;
+                            third[t1] = third[t2];
+                        }
+                        l = l - 1;
+                    }
+                }
+            }
+            operate[0] = "Greater";
+            operate[1] = "Less";
+            operate[2] = "Equ";
+            operate[3] = "GreaterE";//等待修改
+            operate[4] = "LessE";//等待修改
+            //DataF dataF = new DataF();
+            //DataF dataF = DataF.getDataF();
+            Condition[] condition = new Condition[20];
+            int c = 0;
+            for (int t = 0; t < l; t++)
+            {
+                if (third[t].ToLower() == "not")
+                {
+                    condition[c] = new Condition(condition[c]);
+                    c++;
+                }
+                for (int t1 = 0; t1 < 5; t1++)
+                    if (third[t] == operate[t1])//等待添加大于等于和小于等于
+                    {
+                        int a = third[t-1].IndexOf('\'');
+                        if (a == -1)
+                        {
+                            if (isname(third[t - 1]).GetType() == typeof(string))
+                                condition[c] = new Condition(getname(third[t - 1]),getindex(second2,third[t-1]) );
+                            else condition[c] = new Condition(isname(third[t - 1]));
+                        }
+                        else condition[c] = new Condition((object)third[t - 1].Substring(1, third[t - 1].Length - 2));//错误
+                        //condition[c] = new Condition((Object)third[t - 1]);
+                        int a1 = third[t + 1].IndexOf('\'');
+                        if (a1 == -1)
+                        {
+                            if (isname(third[t + 1]).GetType() == typeof(string))
+                                condition[c+1] = new Condition(getname(third[t + 1]),getindex(second2,third[t+1] ));
+                            else condition[c+1] = new Condition(isname(third[t + 1]));
+                        }
+                        else condition[c+1] = new Condition((object)third[t +1 ].Substring(1, third[t + 1].Length - 2));
+                       // condition[c + 1] = new Condition((Object)third[t + 1]);
+                        if (t1 == 0)
+                            condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Greater);
+                        if (t1 == 1)
+                            condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Less);
+                        if (t1 == 2)
+                            condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.Equ);
+                        if (t1 == 3)
+                            condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.GreaterE);
+                        if (t1 == 4)
+                            condition[c] = new Condition(condition[c], condition[c + 1], Condition.Operate.LessE);
+                        c++;
+                        break;
+                    }
+            }
+            c = c - 1;
+            int c1 = 0;
+            for (int t = 0; t < l; t++)
+            {
+                if (third[t].ToLower() == "and")
+                {
+                    condition[c1] = new Condition(condition[c1], condition[c1 + 1], Condition.Operate.And);
+                    for (int c0 = 1; c0 < c; c++)
+                    {
+                        condition[c0] = condition[c0 + 1];
+                    }
+                }
+                if (third[t].ToLower() == "less")
+                {
+                    condition[c1] = new Condition(condition[c1], condition[c1 + 1], Condition.Operate.Or);
+                    for (int c0 = 1; c0 < c; c++)
+                    {
+                        condition[c0] = condition[c0 + 1];
+                    }
+                }
+
+            }
+            return condition[0];
+
+
+           /* string a;
+            int b;
+            double cc;
+            if (Int32.TryParse(a,out b))
+            {
+
+            }else if (double.TryParse(a,out cc))
+            {
+
+            }*/
+        }
+
+        private static int getindex(string[] second2, string f)
+        {
+            int c = f.IndexOf('.');
+            if (c != -1)
+            {
+                string b = f.Substring(0, c);
+                return Array.IndexOf(second2, b);
+            }
+           //if(isname("").GetType()==typeof(string))
+            return -1;
+        }
+        private static object isname(string f)
+        {
+            string a;
+            a = f;
+            int b;
+            double cc;
+            bool t;
+            if (Int32.TryParse(a, out b))
+            {
+                return Int32.Parse(a);
+            }
+            else if (double.TryParse(a, out cc))
+            {
+                return double.Parse(a);
+            }
+            else if (bool.TryParse(a, out t))
+                return bool.Parse(a);
+            else return a;
+            //return 0;
+        }
+        private static string getname(string f)
+        {
+            int c = f.IndexOf('.');
+            if (c != -1)
+            {
+                string b = f.Substring(c+1, f.Length-c-1);
+                return b;
+            }
+            return f;
+        }
     }
 }
