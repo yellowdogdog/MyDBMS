@@ -62,6 +62,7 @@ namespace MyDBMS.MyDB
                 }
                 fieldIndex = new int[selectCount];
                 tableIndex = new int[selectCount];
+                fieldNames = new string[selectCount];
                 int p = 0;
                 for(int i = 0; i < fromTableCount; i++)
                 {
@@ -69,6 +70,7 @@ namespace MyDBMS.MyDB
                     {
                         fieldIndex[p] = j;
                         tableIndex[p] = i;
+                        fieldNames[p] = tableF.tables[fromTable[i]].fields[j].FieldName;
                         p++;
                     }
                 }

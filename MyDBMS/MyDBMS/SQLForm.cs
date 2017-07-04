@@ -25,8 +25,15 @@ namespace MyDBMS
             try
             {
                 DataTable dt = SQLreader.readsql(rtbSQL.Text);
-                dataGridView1.DataSource = dt;
-                rtbSQL.Text = "";
+                if (dt == null)
+                {
+                    MessageBox.Show("执行成功！", "SQL执行结果", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }else
+                {
+                    dataGridView1.DataSource = dt;
+                    dataGridView1.AllowUserToAddRows = false;
+                }
+                
             }
             catch (TableEditException tableE)
             {

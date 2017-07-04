@@ -78,7 +78,7 @@ namespace MyDBMS.SQLReader
                 while (i < sql.Length)
                 {
                     second[n]=null;
-                    for (; sql[i] != ' ' && sql[i] != '\n' && sql[i] != ',' && i < sql.Length; i++)
+                    for (; i < sql.Length  && sql[i] != '\n' && sql[i] != ',' && sql[i] != ' '; i++)
                     {
                         second[n] = second[n] + sql[i];
                         k = 1;
@@ -133,7 +133,7 @@ namespace MyDBMS.SQLReader
                     first0[s1] = getname(first0[s1]);
                 }
                 if (first0[0] == "*")
-                    first0[0] = null;
+                    first0 = null;
                 DataF dataF = DataF.getDataF();
                 if(i==sql.Length)
                 {
