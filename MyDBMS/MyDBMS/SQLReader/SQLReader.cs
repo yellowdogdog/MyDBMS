@@ -435,7 +435,7 @@ namespace MyDBMS.SQLReader
                         else if (third[c] != null)
                             MessageBox.Show("是否为主键输入错误！");
                     }
-                    if (sql[i] == ',' || sql[i] == '）')
+                    if (sql[i] == ',' || sql[i] == ')')
                     {
                         if (third[2] == null)
                             third[2] = "0";
@@ -450,7 +450,7 @@ namespace MyDBMS.SQLReader
                             if (third[1].ToLower() == ar.GetValue(en).ToString().ToLower())
                                 break;
                         }
-                        Field field = new Field(third[0], (Field.Type)en, Convert.ToInt16(third[2]), nul, key);
+                        Field field =new Field(third[0], (Field.Type)en, Convert.ToInt16(third[2]), nul, key);
                         table.addField(field);
                     }
                     if (sql[i] == ')')
