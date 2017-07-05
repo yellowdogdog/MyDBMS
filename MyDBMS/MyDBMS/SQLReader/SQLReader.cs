@@ -342,7 +342,7 @@ namespace MyDBMS.SQLReader
                         k = 1;
                     }
 
-                    //second[0]是表名
+                    //second[1]是表名
                     /*if (second[ins].ToLower() == "set")
                         break;*/
                     if (k == 1)
@@ -354,7 +354,7 @@ namespace MyDBMS.SQLReader
                 }
                 //11111111
                 TableF tablef = TableF.getTableF();
-                tablef.deleteTable(second[0]);
+                tablef.deleteTable(second[1]);
             }
             else if (keyword[0].ToLower() == all[5])//create
             {
@@ -397,7 +397,7 @@ namespace MyDBMS.SQLReader
                     if (c == 2)
                     {
                         bool num = true;
-                        for (int i1 = 0; i1 < third[c].Length; i1++)
+                        for (int i1 = 0; third[2] != null && i1 < third[c].Length; i1++)
                         {
                             if (third[2]!=null&&!Char.IsNumber(third[2], i1))
                             {
@@ -428,6 +428,24 @@ namespace MyDBMS.SQLReader
                         else if (third[c] != null)
                             MessageBox.Show("是否为主键输入错误！");
                     }
+                    if (sql[i] == ',' || sql[i] == '）')
+                    {
+                        if (third[2] == null)
+                            third[2] = "0";
+                        //获取枚举值en
+                        Type ob = typeof(Field.Type);
+                        //Field.Type ob = new Field.Type();
+                        //ob = Field.Type.Int;
+                        Array ar = Enum.GetValues(ob);
+                        int en;
+                        for (en = 0; en < ar.Length; en++)
+                        {
+                            if (third[1].ToLower() == ar.GetValue(en).ToString().ToLower())
+                                break;
+                        }
+                        Field field = new Field(third[0], (Field.Type)en, Convert.ToInt16(third[2]), nul, key);
+                        table.addField(field);
+                    }
                     if (sql[i] == ')')
                         break;
                     if (sql[i] == ',')
@@ -442,24 +460,9 @@ namespace MyDBMS.SQLReader
                         c++;
                         k = 0;
                     }
-                    i++;
-                    if(sql[i]==','||sql[i]=='）')
-                    {
-                        //获取枚举值en
-                        Type ob = typeof(Field.Type);
-                        //Field.Type ob = new Field.Type();
-                        //ob = Field.Type.Int;
-                        Array ar = Enum.GetValues(ob);
-                        int en;
-                        for (en = 0; en < ar.Length; en++)
-                        {
-                            if (third[1].ToLower() == ar.GetValue(en).ToString().ToLower())
-                                break;
-                        }
 
-                        Field field = new Field(third[0], (Field.Type)en, Convert.ToInt16(third[2]), nul, key);
-                        table.addField(field);
-                    }
+                   
+                    i++;
                 }
                 tableF.addTable(table);
                 DataTable dt = null;
