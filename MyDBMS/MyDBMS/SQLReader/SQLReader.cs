@@ -40,7 +40,6 @@ namespace MyDBMS.SQLReader
             initialize(first);
             initialize(second);
             int i;
-            j = 0;
             for (i = 0; i < 10; i++)
             {
                 keyword[i]=null;
