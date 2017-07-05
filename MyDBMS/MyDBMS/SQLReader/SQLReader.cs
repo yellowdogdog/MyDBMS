@@ -15,9 +15,15 @@ namespace MyDBMS.SQLReader
         public static string[] third = new string[20];
         public static string[] operate = new string[10];
         public static int k = 0, l = 0;
+        private static void initialize(string[] f)
+        {
+            for (int a1 = 0; a1 < f.Length; a1++)
+                f[a1] = null;
+        }
         public static DataTable readsql(string sql)
         {
-            
+            initialize(third);
+            initialize(operate);
             //sql = "select a from student where sno='1234'";
             string[] all = new string[10];
             all[0] = "select";
@@ -30,8 +36,10 @@ namespace MyDBMS.SQLReader
             string[]  keyword =new string[10];
             string[] first = new string[10];
             string[] second = new string[10];
-          
-            int i,j;
+            initialize(keyword);
+            initialize(first);
+            initialize(second);
+            int i;
             j = 0;
             for (i = 0; i < 10; i++)
             {
