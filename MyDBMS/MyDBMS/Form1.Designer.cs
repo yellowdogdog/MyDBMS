@@ -30,15 +30,15 @@
         {
             this.btnSQL = new System.Windows.Forms.Button();
             this.lbxTable = new System.Windows.Forms.ListBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnChoose = new System.Windows.Forms.Button();
+            this.btnDropTable = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            this.dgvTableDetial = new System.Windows.Forms.DataGridView();
+            this.dgvValue = new System.Windows.Forms.DataGridView();
+            this.btnSaveTable = new System.Windows.Forms.Button();
+            this.btnSaveValue = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTableDetial)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvValue)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSQL
@@ -60,23 +60,25 @@
             this.lbxTable.Size = new System.Drawing.Size(239, 436);
             this.lbxTable.TabIndex = 1;
             // 
-            // button1
+            // btnChoose
             // 
-            this.button1.Location = new System.Drawing.Point(13, 501);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnChoose.Location = new System.Drawing.Point(13, 501);
+            this.btnChoose.Name = "btnChoose";
+            this.btnChoose.Size = new System.Drawing.Size(75, 23);
+            this.btnChoose.TabIndex = 2;
+            this.btnChoose.Text = "查看表格";
+            this.btnChoose.UseVisualStyleBackColor = true;
+            this.btnChoose.Click += new System.EventHandler(this.btnChoose_Click);
             // 
-            // button2
+            // btnDropTable
             // 
-            this.button2.Location = new System.Drawing.Point(95, 501);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnDropTable.Location = new System.Drawing.Point(95, 501);
+            this.btnDropTable.Name = "btnDropTable";
+            this.btnDropTable.Size = new System.Drawing.Size(75, 23);
+            this.btnDropTable.TabIndex = 3;
+            this.btnDropTable.Text = "删除表格";
+            this.btnDropTable.UseVisualStyleBackColor = true;
+            this.btnDropTable.Click += new System.EventHandler(this.btnDropTable_Click);
             // 
             // button3
             // 
@@ -87,62 +89,64 @@
             this.button3.Text = "button3";
             this.button3.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // dgvTableDetial
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(272, 54);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(695, 194);
-            this.dataGridView1.TabIndex = 5;
+            this.dgvTableDetial.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTableDetial.Location = new System.Drawing.Point(272, 54);
+            this.dgvTableDetial.Name = "dgvTableDetial";
+            this.dgvTableDetial.RowTemplate.Height = 23;
+            this.dgvTableDetial.Size = new System.Drawing.Size(464, 194);
+            this.dgvTableDetial.TabIndex = 5;
             // 
-            // dataGridView2
+            // dgvValue
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(272, 254);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.RowTemplate.Height = 23;
-            this.dataGridView2.Size = new System.Drawing.Size(695, 236);
-            this.dataGridView2.TabIndex = 6;
+            this.dgvValue.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvValue.Location = new System.Drawing.Point(272, 254);
+            this.dgvValue.Name = "dgvValue";
+            this.dgvValue.RowTemplate.Height = 23;
+            this.dgvValue.Size = new System.Drawing.Size(464, 236);
+            this.dgvValue.TabIndex = 6;
             // 
-            // button4
+            // btnSaveTable
             // 
-            this.button4.Location = new System.Drawing.Point(981, 225);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnSaveTable.Location = new System.Drawing.Point(741, 225);
+            this.btnSaveTable.Name = "btnSaveTable";
+            this.btnSaveTable.Size = new System.Drawing.Size(75, 23);
+            this.btnSaveTable.TabIndex = 7;
+            this.btnSaveTable.Text = "保存表格";
+            this.btnSaveTable.UseVisualStyleBackColor = true;
+            this.btnSaveTable.Click += new System.EventHandler(this.btnSaveTable_Click);
             // 
-            // button5
+            // btnSaveValue
             // 
-            this.button5.Location = new System.Drawing.Point(981, 467);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 8;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnSaveValue.Location = new System.Drawing.Point(741, 466);
+            this.btnSaveValue.Name = "btnSaveValue";
+            this.btnSaveValue.Size = new System.Drawing.Size(75, 23);
+            this.btnSaveValue.TabIndex = 8;
+            this.btnSaveValue.Text = "保存内容";
+            this.btnSaveValue.UseVisualStyleBackColor = true;
+            this.btnSaveValue.Click += new System.EventHandler(this.btnSaveValue_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1068, 571);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.dataGridView2);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(819, 571);
+            this.Controls.Add(this.btnSaveValue);
+            this.Controls.Add(this.btnSaveTable);
+            this.Controls.Add(this.dgvValue);
+            this.Controls.Add(this.dgvTableDetial);
             this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnDropTable);
+            this.Controls.Add(this.btnChoose);
             this.Controls.Add(this.lbxTable);
             this.Controls.Add(this.btnSQL);
             this.Name = "Form1";
             this.Text = "Form1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvTableDetial)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvValue)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -151,13 +155,13 @@
 
         private System.Windows.Forms.Button btnSQL;
         private System.Windows.Forms.ListBox lbxTable;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnChoose;
+        private System.Windows.Forms.Button btnDropTable;
         private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.DataGridView dgvTableDetial;
+        private System.Windows.Forms.DataGridView dgvValue;
+        private System.Windows.Forms.Button btnSaveTable;
+        private System.Windows.Forms.Button btnSaveValue;
     }
 }
 

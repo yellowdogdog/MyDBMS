@@ -123,15 +123,37 @@ namespace MyDBMS.MyDB
             #endregion
             //取出数据
             DataTable[] dts = new DataTable[fromTableCount];
+            Table[] tables = new Table[fromTableCount];
             for(int i = 0; i < fromTableCount; i++)
             {
                 dts[i] = datas[fromTable[i]].getData(tableF.tables[fromTable[i]]);
+                tables[i] = tableF.tables[fromTable[i]];
             }
             //构造空表
             DataTable dtResult = new DataTable();
             for(int i = 0; i < selectCount; i++)
             {
-                dtResult.Columns.Add(new DataColumn(fieldNames[i]));
+                int t = 0;
+                while (true)
+                {
+                    try
+                    {
+                        if (t != 0)
+                        {
+                            dtResult.Columns.Add(new DataColumn(fieldNames[i]+t));
+                        }else
+                        {
+                            dtResult.Columns.Add(new DataColumn(fieldNames[i]));
+                        }
+                        
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        t++;
+                    }
+                }
+                
             }
 
             int[] rows = new int[dts.Length];//每张表的行数
@@ -143,7 +165,7 @@ namespace MyDBMS.MyDB
             }
             for (int i = 0; i < cartesian; i++)
             {//笛卡尔积主循环
-                if (condition==null||condition.isConditionSetUp(tableF.tables.ToArray(), dts, i))
+                if (condition==null||condition.isConditionSetUp(tables, dts, i))
                 {//条件成立
                     DataRow dr = dtResult.NewRow();
                     for(int j = 0; j < selectCount; j++)

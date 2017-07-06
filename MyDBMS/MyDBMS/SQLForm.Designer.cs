@@ -45,6 +45,7 @@
             // 
             // btnClear
             // 
+            this.btnClear.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClear.Location = new System.Drawing.Point(556, 105);
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(75, 23);
@@ -76,6 +77,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnClear;
             this.ClientSize = new System.Drawing.Size(640, 586);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnExcute);

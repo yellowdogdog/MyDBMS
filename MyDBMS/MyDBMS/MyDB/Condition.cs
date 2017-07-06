@@ -133,7 +133,15 @@ namespace MyDBMS.MyDB
                     if (operate == Operate.Equ)
                     {
                         object leftValue = leftCondition.getValue(tables,dts,i);
+                        if (leftValue.GetType() == typeof(string))
+                        {
+                            leftValue=((string)leftValue).Replace("\0", "");
+                        }                       
                         object rightValue = rightCondition.getValue(tables, dts, i);
+                        if (rightValue.GetType() == typeof(string))
+                        {
+                            rightValue = ((string)rightValue).Replace("\0", "");
+                        }
                         return leftValue.Equals(rightValue);
                     }else if (operate == Operate.Greater || operate == Operate.GreaterE || operate == Operate.Less || operate == Operate.LessE)
                     {

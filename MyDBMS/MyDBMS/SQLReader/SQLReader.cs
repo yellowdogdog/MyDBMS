@@ -61,7 +61,7 @@ namespace MyDBMS.SQLReader
                 while (i < sql.Length)
                 {
                     first[m]=null;
-                    for (; i < sql.Length && sql[i] != ' ' && sql[i] != '\n'; i++)
+                    for (; i < sql.Length && sql[i] != ' ' && sql[i] != '\n' && sql[i] != ','; i++)
                     {
                         first[m] = first[m] + sql[i];
                         k = 1;

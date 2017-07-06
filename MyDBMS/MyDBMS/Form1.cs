@@ -70,11 +70,159 @@ namespace MyDBMS
         public void refreshAll()
         {
             bindTableData();
+            lbxTable.SelectedIndex = -1;
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit();
         }
+
+        private void btnChoose_Click(object sender, EventArgs e)
+        {
+            if (lbxTable.SelectedIndex == -1)
+            {
+                MessageBox.Show("请选择表", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                bindTableDetailData();
+                bindValueData();
+            }
+        }
+        private void bindValueData()
+        {
+            DataF dataF = DataF.getDataF();
+            TableF table = TableF.getTableF();
+            dgvValue.DataSource = dataF.datas[lbxTable.SelectedIndex].getData(table.tables[lbxTable.SelectedIndex]);
+        }
+        private void bindTableDetailData()
+        {
+            TableF tableF = TableF.getTableF();
+            DataTable dt = getFieldTable();
+            foreach(var field in tableF.tables[lbxTable.SelectedIndex].fields)
+            {
+                DataRow dr = dt.NewRow();
+                dr[0] = field.FieldName;
+                switch (field.type)
+                {
+                    case Field.Type.Bit:
+                        dr[1] = "Bit";
+                        break;
+                    case Field.Type.Int:
+                        dr[1] = "Int";
+                        break;
+                    case Field.Type.nChar:
+                        dr[1] = "nChar[" + field.length + "]";
+                        break;
+                    case Field.Type.Real:
+                        dr[1] = "Real";
+                        break;
+                }
+                dr[2] = field.isNullable;
+                dr[3] = field.isKey;
+                dt.Rows.Add(dr);
+            }
+            dgvTableDetial.DataSource = dt;
+            
+            
+
+        }
+        private void btnDropTable_Click(object sender, EventArgs e)
+        {
+            if (lbxTable.SelectedIndex == -1)
+            {
+                MessageBox.Show("请选择表", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                TableF tableF = TableF.getTableF();
+                tableF.deleteTable(lbxTable.SelectedItem.ToString());
+                refreshAll();
+            }
+        }
+
+        private void btnSaveValue_Click(object sender, EventArgs e)
+        {
+            DataTable dt = (DataTable)dgvValue.DataSource;
+
+            if (lbxTable.SelectedIndex == -1)
+            {
+                //MessageBox.Show("请选择表", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                DataF dataF = DataF.getDataF();
+                try
+                {
+                    dataF.changeData(lbxTable.SelectedItem.ToString(), dt);
+                    refreshAll();
+                }
+                catch(DataEditException dataE)
+            {
+                MessageBox.Show(dataE.Message, "数据操作错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            }
+            
+        }
+        private static DataTable getFieldTable()
+        {
+            DataTable dt = new DataTable();
+            #region 设置表格式
+            DataColumn dc = new DataColumn("列名");
+            dc.DataType = typeof(string);
+            dt.Columns.Add(dc);
+            dc = new DataColumn("类型");
+            dc.DataType = typeof(string);
+            dt.Columns.Add(dc);
+            dc = new DataColumn("允许空值");
+            dc.DataType = typeof(bool);
+            dt.Columns.Add(dc);
+            dc = new DataColumn("是否主键");
+            dc.DataType = typeof(bool);
+            dt.Columns.Add(dc);
+            #endregion
+            return dt;
+        }
+
+        private void btnSaveTable_Click(object sender, EventArgs e)
+        {
+            fmain = this;
+            if (lbxTable.SelectedIndex == -1)
+            {
+                NameForm nameform = new NameForm();
+                nameform.Show();
+            }
+            else
+            {
+                
+            }
+        }
+        public void saveNewTable(string name)
+        {
+
+        }
+        //private void saveTable(DataTable dt,string name)
+        //{
+        //    bool hasKey = false;
+        //    Table table = new Table(name);
+        //    for(int i = 0; i < dt.Rows.Count; i++) {
+        //        string fname = (string)dt.Rows[i][0];
+        //        string types = (string)dt.Rows[i][1];
+        //        types = types.ToLower();
+        //        switch (types[0])
+        //        {
+        //            case 'i':
+        //                break;
+        //            case 'n':
+        //                break;
+        //            case 'r':
+        //                break;
+        //            case 'b':
+        //                break;
+        //        }
+        //        Field field = new Field();
+        //    }
+        //}
     }
 }

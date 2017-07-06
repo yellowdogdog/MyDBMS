@@ -148,7 +148,7 @@ namespace MyDBMS.MyDB
                 DataTable dt = getData(table);
                 for(int i = 0; i < dt.Rows.Count; i++)
                 {
-                    if (tableValue[pk].Equals(dt.Rows[i]))
+                    if (tableValue[pk].Equals(dt.Rows[i][pk]))
                     {
                         throw new DataEditException("不符合主码约束");
                     }
